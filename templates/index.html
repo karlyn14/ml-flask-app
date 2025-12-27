@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Customer Churn Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">🎯 Silent Customer Churn Predictor</h1>
+                <p class="subtitle">Detect behavioral disengagement before customers leave</p>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('predict')">Single Prediction</button>
+                <button class="tab-btn" onclick="showTab('batch')">Batch Analysis</button>
+                <button class="tab-btn" onclick="showTab('train')">Train Model</button>
+            </div>
+
+            <!-- Predict Tab -->
+            <div id="predict-tab" class="tab-content active">
+                <div class="card">
+                    <h2 class="card-title">Customer Behavioral Metrics</h2>
+                    <form id="prediction-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="engagement_momentum">Engagement Momentum (%)</label>
+                                <input type="number" id="engagement_momentum" name="engagement_momentum" 
+                                       step="0.01" value="-35.5" required>
+                                <span class="help-text">Negative = declining activity</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="behavioral_drift">Behavioral Drift (%)</label>
+                                <input type="number" id="behavioral_drift" name="behavioral_drift" 
+                                       step="0.01" value="55.2" required>
+                                <span class="help-text">High = using fewer features</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="silence_index">Silence Index</label>
+                                <input type="number" id="silence_index" name="silence_index" 
+                                       step="0.01" value="12.3" required>
+                                <span class="help-text">High = more inactivity gaps</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="response_degradation">Response Degradation (%)</label>
+                                <input type="number" id="response_degradation" name="response_degradation" 
+                                       step="0.01" value="250.0" required>
+                                <span class="help-text">High = slower response times</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="session_decay_rate">Session Decay Rate (%)</label>
+                                <input type="number" id="session_decay_rate" name="session_decay_rate" 
+                                       step="0.01" value="45.8" required>
+                                <span class="help-text">High = shorter sessions</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="consistency_score">Consistency Score</label>
+                                <input type="number" id="consistency_score" name="consistency_score" 
+                                       step="0.01" value="32.5" required>
+                                <span class="help-text">Low = erratic behavior</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Predict Churn Risk</button>
+                    </form>
+                </div>
+
+                <div id="result-section" class="result-section" style="display: none;">
+                    <div class="card result-card">
+                        <h2 class="card-title">Prediction Results</h2>
+
+                        <div class="risk-display">
+                            <div class="risk-score">
+                                <div class="score-label">Churn Risk Score</div>
+                                <div class="score-value" id="churn-score">--</div>
+                                <div class="score-percent">%</div>
+                            </div>
+                            <div class="risk-badge-container">
+                                <span class="risk-badge" id="risk-badge">--</span>
+                            </div>
+                        </div>
+
+                        <div class="risk-factors">
+                            <h3 class="section-title">Top Risk Factors</h3>
+                            <div id="risk-factors-list"></div>
+                        </div>
+
+                        <div class="recommendation-box">
+                            <h3 class="section-title">Business Recommendation</h3>
+                            <p id="recommendation-text">--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Batch Analysis Tab -->
+            <div id="batch-tab" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">Batch Customer Analysis</h2>
+                    <button onclick="analyzeBatch()" class="btn btn-primary">Analyze Top 50 Customers</button>
+
+                    <div id="batch-results" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Train Tab -->
+            <div id="train-tab" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">Train Model</h2>
+                    <p class="info-text">Train the Random Forest model on the customer behavior dataset.</p>
+                    <button onclick="trainModel()" class="btn btn-primary">Train Model</button>
+
+                    <div id="train-results" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Silent Customer Churn Predictor | Detecting disengagement before it's too late</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
